@@ -1,0 +1,16 @@
+{
+  "name": "ngram",
+  "version": "0.0.0",
+  "private": true,
+  "description": "",
+  "main": "cli.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kevin Chapelier",
+  "license": "MIT",
+  "dependencies": {
+    "minimist": "^1.2.0",
+    "uniq": "^1.0.1"
+  }
+}
