@@ -145,7 +145,9 @@ var preProcessString = function preProcessString (string, config) {
         string = string.replace(filters[config.filter], ' ');
     }
 
-    var strings = string.split(/[ \n\r]/).filter(function (v) { return v; });
+    var strings = string.split(/\s+/).filter(function (v) {
+        return v.length > 0;
+    });
 
     if (config.minLength) {
         strings = strings.filter(function (v) {
