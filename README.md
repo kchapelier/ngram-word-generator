@@ -14,6 +14,20 @@ A previous version of the project can be seen in use in [Stochastèmes](http://w
  - The generated models are standard json files, optimized for web transfer
  - Porting the client code to other languages should be trivial, the generated n-gram models can thus be used virtually anywhere
 
+## Installing and testing
+
+With [npm](http://npmjs.org) do:
+
+```
+npm install ngram-word-generator
+```
+
+It can also be installed globally to simplify the acces to the cli utility:
+
+```
+npm install ngram-word-generator -g
+```
+
 ## Basic example
 
 ```js
@@ -85,7 +99,7 @@ ngram-word-generator source.txt --n=3 --minLength=4 --filter=extended --compress
 
 ## Changemap
 
-### [1.0.0](https://github.com/kchapelier/ngram-word-generation/tree/1.0.0) (2016-08-12) :
+### [1.0.0](https://github.com/kchapelier/ngram-word-generator/tree/1.0.0) (2016-08-12) :
 
  * First publication.
 
