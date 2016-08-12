@@ -1,16 +1,35 @@
 {
-  "name": "ngram",
-  "version": "0.0.0",
-  "private": true,
-  "description": "",
-  "main": "cli.js",
+  "name": "ngram-word-generator",
+  "homepage": "https://github.com/kchapelier/ngram-word-generator",
+  "version": "1.0.0",
+  "description": "Word generation based on n-gram models, and a cli utility to generate said models",
+  "main": "index.js",
+  "bin": {
+    "ngram-word-generator": "cli.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [
+    "language",
+    "ngram",
+    "n-gram",
+    "markov",
+    "word",
+    "generator"
+  ],
   "author": "Kevin Chapelier",
   "license": "MIT",
   "dependencies": {
     "minimist": "^1.2.0",
     "uniq": "^1.0.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kchapelier/ngram-word-generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kchapelier/ngram-word-generator/issues"
+  },
+  "readmeFilename": "README.md"
 }
