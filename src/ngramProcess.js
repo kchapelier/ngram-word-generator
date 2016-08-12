@@ -45,9 +45,9 @@ var doNgram = function doNgram (string, resultData, config) {
 
         previousNgram = ngramData;
     }
-}
+};
 
-var postProcessData = function postProcessData (resultData) {
+var postProcessData = function postProcessData (resultData, compressFloat) {
     var keys = Object.keys(resultData.elements),
         childrenKeys,
         validFirst = {},
@@ -83,7 +83,7 @@ var postProcessData = function postProcessData (resultData) {
 
         for (k = 0; k < childrenKeys.length; k++) {
             data.children[childrenKeys[k]] /= sumChildren;
-            data.children[childrenKeys[k]] = parseFloat(data.children[childrenKeys[k]].toFixed(7), 10);
+            data.children[childrenKeys[k]] = compressFloat(data.children[childrenKeys[k]]);
         }
 
         data.hasChildren = childrenKeys.length > 0;
@@ -97,7 +97,7 @@ var postProcessData = function postProcessData (resultData) {
 
         for (k = 0; k < childrenKeys.length; k++) {
             data.lastChildren[childrenKeys[k]] /= sumChildren;
-            data.lastChildren[childrenKeys[k]] = parseFloat(data.lastChildren[childrenKeys[k]].toFixed(7), 10);
+            data.lastChildren[childrenKeys[k]] = compressFloat(data.lastChildren[childrenKeys[k]]);
         }
 
         data.hasLastChildren = childrenKeys.length > 0;
@@ -108,13 +108,13 @@ var postProcessData = function postProcessData (resultData) {
     for (i = 0; i < keys.length; i++) {
         key = keys[i];
         validFirst[key] /= sumFirst;
-        validFirst[key] = parseFloat(validFirst[key].toFixed(7), 10);
+        validFirst[key] = compressFloat(validFirst[key]);
     }
 
     resultData.firstElements = validFirst;
 
     return resultData;
-}
+};
 
 var compact = function compact (resultData) {
     var keys = Object.keys(resultData.elements),
@@ -125,7 +125,6 @@ var compact = function compact (resultData) {
     for (i = 0; i < keys.length; i++) {
         ngramData = resultData.elements[keys[i]];
         ngramDesc = [
-            (ngramData.hasChildren || ngramData.hasLastChildren) ? 1 : 0,
             ngramData.hasChildren ? ngramData.children : 0,
             ngramData.hasLastChildren ? ngramData.lastChildren : 0
         ];
@@ -163,16 +162,21 @@ var preProcessString = function preProcessString (string, config) {
 };
 
 module.exports  = function process (data, config) {
-    config.n = parseInt(config.n, 10) || 2;
+    config.name = config.name || null;
+    config.filter = config.filter || 'extended';
+    config.n = parseInt(config.n, 10) || 3;
     config.minLength = parseInt(config.minLength, 10) || 0;
-    config.filter = config.filter || 'alphaNumerical';
     config.unique = !!config.unique;
     config.excludeOriginal = !!config.excludeOriginal;
+    config.compress = !!config.compress;
 
     var resultConfig = {
         name: config.name,
         type: config.type,
-        n: config.n
+        n: config.n,
+        minLength: config.minLength,
+        unique: config.unique ? 1 : 0,
+        excludeOriginal: config.excludeOriginal ? 1 : 0
     };
 
     var resultData = {
@@ -191,7 +195,11 @@ module.exports  = function process (data, config) {
         }
     }
 
-    compact(postProcessData(resultData));
+    var formatFloat = config.compress ? function compressFloat (float, precision) {
+        return parseFloat(float.toFixed(precision || 7), 10);
+    } : function (v) { return v; };
+
+    compact(postProcessData(resultData, formatFloat));
 
     return {
         config: resultConfig,
