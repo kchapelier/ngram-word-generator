@@ -14,6 +14,8 @@ A previous version of the project can be seen in use in [Stochastèmes](http://w
  - The generated models are standard json files, optimized for web transfer
  - Porting the client code to other languages should be trivial, the generated n-gram models can thus be used virtually anywhere
 
+## Basic example
+
 ```js
 var makeGenerator = require('ngram-word-generator'),
     ngramModel = require('./irish-firstnames.json'); //generated with the cli utility
@@ -63,7 +65,7 @@ In Unix-like environment, the cli utility can also be piped into :
  - minLength: The minimum length of the word included in the generation of the model. Default to 4.
  - unique: Usually if multiple instances of a specific word is included in the source file, the model will be skewed toward generating similar words. Setting this option ensure this doesn't happen.
  - compress: Reduce the size of the model file, making it less readable and slightly less precise.
- - excludeOriginal: The model will include the full list of the words included in the source file so that the generation can exclude them.
+ - excludeOriginal: The model will include the full list of the words included in the source file so that the generation can blacklist them.
  - filter: Character filtering option. Default to extended.
 
 **Filters**
