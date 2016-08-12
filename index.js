@@ -20,11 +20,23 @@ var selectRandom = function selectRandom (list, rng) {
     return key;
 };
 
+/**
+ * Make a word generator function based on a given n-gram model
+ * @param {object} model N-gram model
+ * @returns {Function} Word generator function
+ */
 var makeGenerator = function makeGenerator (model) {
     var config = model.config,
         data = model.data,
         exclude = model.exclude;
 
+    /**
+     * Generate a word
+     * @param {string|null} [firstNgram] First n-gram of the word, select a random one otherwise.
+     * @param {int} lengthHint Suggested word length
+     * @param {function} [rng] Random number generator function, default to Math.random
+     * @returns {*|string}
+     */
     var ngramGenerator = function ngramGenerator (firstNgram, lengthHint, rng) {
         var ngram = firstNgram || selectRandom(data.fe, rng), //random first element
             result = ngram,
@@ -51,6 +63,12 @@ var makeGenerator = function makeGenerator (model) {
         return result;
     };
 
+    /**
+     * Generate a word, blacklist with the exclude list
+     * @param {int} lengthHint Suggested word length
+     * @param {function} [rng] Random number generator function, default to Math.random
+     * @returns {string} Generated word
+     */
     var generator = function generator (lengthHint, rng) {
         var result;
 
@@ -58,7 +76,7 @@ var makeGenerator = function makeGenerator (model) {
 
         do {
             result = ngramGenerator(null, lengthHint, rng);
-        } while(exclude !== 0 && exclude.indexOf(result) !== -1);
+        } while (exclude !== 0 && exclude.indexOf(result) !== -1);
 
         return result;
     };

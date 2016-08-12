@@ -11,6 +11,7 @@ A previous version of the project can be seen in use in [Stochastèmes](http://w
 
  - Works in node and in browsers
  - A cli utility to do the heavy-lifting of generating the n-gram models from text files
+ - The generated models are standard json files, optimized for web transfer
  - Porting the client code to other languages should be trivial, the generated n-gram models can thus be used virtually anywhere
 
 ```js
@@ -77,7 +78,7 @@ In Unix-like environment, the cli utility can also be piped into :
 **Full example**
 
 ```
-ngram-word-generator --file=source.txt --n=3 --minLength=4 --filter=extended --compress --unique --excludeOriginal > model.json
+ngram-word-generator source.txt --n=3 --minLength=4 --filter=extended --compress --unique --excludeOriginal > model.json
 ```
 
 ## Changemap

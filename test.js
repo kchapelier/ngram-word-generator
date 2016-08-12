@@ -1,4 +1,4 @@
-var data = require('./test-compressed3.json'),
+var data = require('./tests/test-compressed3.json'),
     makeGenerator = require('./index');
 
 var generator = makeGenerator(data);
