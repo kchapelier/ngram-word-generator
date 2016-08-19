@@ -81,31 +81,67 @@ var makeGenerator = function makeGenerator (model) {
         return result;
     };
 
-    /*
-    generator.bruteForceList = function (lengthHintMin, lengthHintMax, numberHint, rng) {
-        var numberTries = numberHint * 2,
-            lengthHintBase = Math.min(lengthHintMax, lengthHintMin),
-            lengthHintDelta = Math.abs(lengthHintMax - lengthHintMin),
-            results = [],
-            result;
+    /**
+     * Recursively crawl the ngram tree and populate the dictionary
+     * @param {int} lengthMin Minimum length of the word included in the dictionary
+     * @param {int} lengthMax Maximum length of the word included in the dictionary
+     * @param {string} string
+     * @param {object} ngramData
+     * @param {Array} dictionary
+     */
+    var dictionaryRecursive = function dictionaryRecursive (lengthMin, lengthMax, string, ngramData, dictionary) {
+        var i,
+            ngrams,
+            ngram;
 
-        rng = rng || Math.random;
+        // recursion on the children if lengthMax not reached yet
+        if (string.length < lengthMax - 1 && ngramData[0]) {
+            ngrams = Object.keys(ngramData[0]);
 
-        do {
-            result = ngramGenerator(null, lengthHintBase + (rng() * lengthHintDelta + 1) | 0, rng);
-            numberTries--;
+            for (i = 0; i < ngrams.length; i++) {
+                ngram = ngrams[i];
 
-            if (results.indexOf(result) === -1) {
-                results.push(result);
-                numberHint--;
+                dictionaryRecursive(lengthMin, lengthMax, string + ngram.substr(-1), data.e[ngram], dictionary);
             }
-        } while (numberTries > 0 && numberHint > 0);
+        }
 
-        results.sort();
+        // complete word with last children if the valid range
+        if (string.length >= lengthMin - 1 && ngramData[1]) {
+            ngrams = Object.keys(ngramData[1]);
 
-        return results;
+            for (i = 0; i < ngrams.length; i++) {
+                var generated = string + ngrams[i].substr(-1);
+
+                if (exclude === 0 || exclude.indexOf(generated) === -1) {
+                    dictionary.push(generated);
+                }
+            }
+        }
     };
 
+    /**
+     * Generate a comprehensive dictionary (list) of generated words
+     * @param {int} lengthMin Minimum length of the word included in the dictionary
+     * @param {int} [lengthMax] Maximum length of the word included in the dictionary, default to lengthMin.
+     * @returns {string[]} Comprehensive list of all the possible words in the length range
+     */
+    generator.dictionary = function dictionary (lengthMin, lengthMax) {
+        var firstNgrams = Object.keys(data.fe),
+            dictionary = [],
+            i;
+
+        lengthMax = lengthMax || lengthMin;
+
+        for (i = 0; i < firstNgrams.length; i++) {
+            dictionaryRecursive(lengthMin, lengthMax, firstNgrams[i], data.e[firstNgrams[i]], dictionary);
+        }
+
+        dictionary.sort();
+
+        return dictionary;
+    };
+
+    /*
     generator.complete = function (start, lengthHint, rng) {
         var position = -config.n,
             ngram;
