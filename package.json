@@ -1,7 +1,7 @@
 {
   "name": "ngram-word-generator",
   "homepage": "https://github.com/kchapelier/ngram-word-generator",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Word generation based on n-gram models, and a cli utility to generate said models",
   "main": "index.js",
   "bin": {
