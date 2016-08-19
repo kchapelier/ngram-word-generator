@@ -89,7 +89,7 @@ In Unix-like environment, the cli utility can also be piped into :
  - unique: Usually if multiple instances of a specific word is included in the source file, the model will be skewed toward generating similar words. Setting this option ensure this doesn't happen.
  - compress: Reduce the size of the model file, making it less readable and slightly less precise.
  - excludeOriginal: The model will include the full list of the words included in the source file so that the generation can blacklist them.
- - filter: Character filtering option, either on the filters listed below or a regex. Default to 'extended'.
+ - filter: Character filtering option, either one the filters listed below or a regex. Default to 'extended'.
 
 **Filters**
 
@@ -103,8 +103,8 @@ In Unix-like environment, the cli utility can also be piped into :
  - english: A to Z and œæ
  - oldEnglish: A to Z and þðƿȝæœ
  - chinese: All the Chinese characters
- - japanese: All the Japanese (and Chinese characters)
- - noSymbols: exclude all symbols and punctuation for Latin unicode blocks and specific punctuations, symbols and dingbats unicode blocks.
+ - japanese: All the Japanese (and Chinese) characters
+ - noSymbols: Exclude all symbols and punctuation from Latin unicode blocks and specific punctuation, symbols and dingbats unicode blocks.
 
 **Full example**
 
@@ -122,9 +122,9 @@ ngram-word-generator source.txt --n=3 --minLength=4 --filter=/[^a-u]+/ig --compr
 
 ### [1.1.0](https://github.com/kchapelier/ngram-word-generator/tree/1.1.0) (2016-08-19) :
 
- * Add filters (french, english, oldEnglish, chinese, japanese and noSymbols).
- * Allow a custom regular expression as filter options for the cli utility.
- * Add a dictionary method to generate a comprehensive list of generated words.
+ * Add built-in filters (french, english, oldEnglish, chinese, japanese and noSymbols).
+ * Allow a custom regular expression as filter for the cli utility.
+ * Add a dictionary method to generate a comprehensive list of words.
 
 ### [1.0.0](https://github.com/kchapelier/ngram-word-generator/tree/1.0.0) (2016-08-12) :
 
