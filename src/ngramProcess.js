@@ -139,9 +139,32 @@ var compact = function compact (resultData) {
     delete resultData.firstElements;
 };
 
+var stringToRegExp = function stringToRegExp (string) {
+    var match = string.match(/^\/(.+)\/([igmuy]+)$/),
+        regex = null;
+
+    if (match !== null) {
+        regex = new RegExp(match[1], match[2]);
+    }
+
+    return regex;
+};
+
 var preProcessString = function preProcessString (string, config) {
-    if (config.filter && filters.hasOwnProperty(config.filter)) {
-        string = string.replace(filters[config.filter], ' ');
+    if (config.filter) {
+        var filterRegex = null;
+
+        if (config.filter instanceof RegExp) {
+            filterRegex = config.filter
+        } else if (filters.hasOwnProperty(config.filter)) {
+            filterRegex = filters[config.filter];
+        } else {
+            filterRegex = stringToRegExp(config.filter);
+        }
+
+        if (filterRegex) {
+            string = string.replace(filterRegex, ' ');
+        }
     }
 
     var strings = string.split(/\s+/).filter(function (v) {
