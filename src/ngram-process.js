@@ -184,14 +184,33 @@ var preProcessString = function preProcessString (string, config) {
     return strings;
 };
 
-module.exports  = function process (data, config) {
+/**
+ * Generate an n-gram model based on a given text
+ * @param {string} data Text corpus as a single, preferably large, string
+ * @param {object} config Configuration options
+ * @param {string} [config.name] Name of the n-gram model, not directly used
+ * @param {int} [config.n=3] Order of the model (1: unigram, 2: bigram, 3: trigram, ...)
+ * @param {int} [config.minLength=n] Minimum length of the word considered in the generation of the model
+ * @param {bool} [config.unique=false] Avoid skewing the generation toward the most repeated words in the text corpus
+ * @param {bool} [config.compress=false] Reduce the size of the model file, making it slightly less accurate
+ * @param {bool} [config.excludeOriginal=false] Include the full list of the words considered in the generation so they can be blacklisted
+ * @param {string|RegExp} [config.filter='extended'] Character filtering option, either one the existing filters (none, alphabetical, numerical, alphaNumerical, extended, extendedNumerical, french, english, oldEnglish, chinese, japanese, noSymbols) or a RegExp object
+ * @returns {object} N-gram model built from the text corpus
+ */
+module.exports = function generateModel (data, config) {
+    config = config || {};
+
     config.name = config.name || null;
     config.filter = config.filter || 'extended';
     config.n = parseInt(config.n, 10) || 3;
-    config.minLength = parseInt(config.minLength, 10) || 0;
+    config.minLength = parseInt(config.minLength, 10) || config.n;
     config.unique = !!config.unique;
     config.excludeOriginal = !!config.excludeOriginal;
     config.compress = !!config.compress;
+
+    if (config.minLength < config.n) {
+        throw new Error('N-gram error: The minLength value must be larger than or equal to n');
+    }
 
     var resultConfig = {
         name: config.name,
@@ -219,7 +238,7 @@ module.exports  = function process (data, config) {
     }
 
     var formatFloat = config.compress ? function compressFloat (float, precision) {
-        return parseFloat(float.toFixed(precision || 7), 10);
+        return parseFloat(float.toFixed(precision || 7));
     } : function (v) { return v; };
 
     compact(postProcessData(resultData, formatFloat));

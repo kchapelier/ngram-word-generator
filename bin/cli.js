@@ -4,7 +4,7 @@
 
 var fs = require('fs'),
     config = require('minimist')(process.argv.slice(2)),
-    ngramProcess = require('./src/ngramProcess');
+    ngramProcess = require('../src/ngram-process');
 
 var ngramOptions = {
     name: config.name || null,
