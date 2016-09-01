@@ -5,7 +5,7 @@
   "description": "Word generation based on n-gram models, and a cli utility to generate said models",
   "main": "index.js",
   "bin": {
-    "ngram-word-generator": "cli.js"
+    "ngram-word-generator": "bin/cli.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

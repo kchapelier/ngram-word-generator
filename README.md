@@ -64,8 +64,8 @@ Generate a comprehensive dictionary (list) of all the generated words included i
 
 **Options**
 
- - *lengthMin :* Minimum length of the word included in the dictionary.
- - *lengthMax :* Maximum length of the word included in the dictionary. Default to lengthMin.
+ - *lengthMin :* Minimum length of the words included in the dictionary.
+ - *lengthMax :* Maximum length of the words included in the dictionary. Default to lengthMin.
 
 ## CLI
 
