@@ -163,6 +163,10 @@ Generate an n-gram model based on a given text.
 
 ## Changemap
 
+### [1.2.0](https://github.com/kchapelier/ngram-word-generator/tree/1.2.0) (2016-09-01) :
+
+ * Allow and document how to generate n-gram models without the cli utility.
+
 ### [1.1.0](https://github.com/kchapelier/ngram-word-generator/tree/1.1.0) (2016-08-19) :
 
  * Add built-in filters (french, english, oldEnglish, chinese, japanese and noSymbols).
