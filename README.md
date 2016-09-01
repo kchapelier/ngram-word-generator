@@ -85,9 +85,9 @@ In Unix-like environment, the cli utility can also be piped into :
 
  - name: A name for the model, not directly used.
  - n: The order of the model (1: unigram, 2: bigram, 3: trigram, etc.). Default to 3.
- - minLength: The minimum length of the word included in the generation of the model. Default to 4.
+ - minLength: The minimum length of the word considered in the generation of the model. Default to 4.
  - unique: Usually if multiple instances of a specific word is included in the source file, the model will be skewed toward generating similar words. Setting this option ensure this doesn't happen.
- - compress: Reduce the size of the model file, making it less readable and slightly less precise.
+ - compress: Reduce the size of the model file, making it less readable and slightly less accurate.
  - excludeOriginal: The model will include the full list of the words included in the source file so that the generation can blacklist them.
  - filter: Character filtering option, either one the filters listed below or a regex. Default to 'extended'.
 
@@ -118,6 +118,49 @@ With a custom regular expressions as filter (all characters out of the A-U range
 ngram-word-generator source.txt --n=3 --minLength=4 --filter=/[^a-u]+/ig --compress --unique --excludeOriginal > model.json
 ```
 
+## Model generation without the CLI utility
+
+The model generation being a costly process, it is recommended to use the cli utility described above.
+
+```js
+var generateModel = require('ngram-word-generator/model-generation'); // specific entry point
+
+var textData = ...; // retrieve a large text as a single string somehow
+
+var ngramModel = generateModel(textData, {
+    name: 'My n-gram model',
+    filter: 'noSymbols',
+    n: 3,
+    minLength: 4,
+    unique: false,
+    excludeOriginal: true,
+    compress: true
+});
+
+console.log(ngramModel);
+
+// generate a word with the model
+
+var makeGenerator = require('ngram-word-generator');
+
+var generator = makeGenerator(ngramModel);
+
+console.log(generator(10));
+```
+
+### generateModel(textData, options)
+
+Generate an n-gram model based on a given text.
+
+ - *textData:* Text corpus as a single, preferably large, string.
+ - *options.name:* Name of the n-gram model, not directly used.
+ - *options.n:* Order of the model (1: unigram, 2: bigram, 3: trigram, ...). Default to 3.
+ - *options.minLength:* Minimum length of the word considered in the generation of the model. Default to options.n. Must be larger than or equal to options.n, an error will be thrown otherwise.
+ - *options.unique:* Avoid skewing the generation toward the most repeated words in the text corpus. Default to false.
+ - *options.compress:* Reduce the size of the model file, making it slightly less accurate. Default to false.
+ - *options.excludeOriginal:* Include the full list of the words considered in the generation so they can be blacklisted. Default to false.
+ - *options.filter:* Character filtering option, either one the existing filters (see CLI) or a RegExp object. Default to 'extended'.
+
 ## Changemap
 
 ### [1.1.0](https://github.com/kchapelier/ngram-word-generator/tree/1.1.0) (2016-08-19) :
@@ -132,7 +175,7 @@ ngram-word-generator source.txt --n=3 --minLength=4 --filter=/[^a-u]+/ig --compr
 
 ## Roadmap
 
- - Make it possible (and document how) to use the model generation outside of the cli utility
+ - Fix issue where a model with exclude could lead to an infinite loop with a text corpus of poor quality
  - Make an online tool to generate the n-gram models
 
 ## License

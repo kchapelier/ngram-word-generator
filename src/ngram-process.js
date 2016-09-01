@@ -151,6 +151,8 @@ var stringToRegExp = function stringToRegExp (string) {
 };
 
 var preProcessString = function preProcessString (string, config) {
+    string = string.toLowerCase();
+
     if (config.filter) {
         var filterRegex = null;
 
@@ -214,7 +216,6 @@ module.exports = function generateModel (data, config) {
 
     var resultConfig = {
         name: config.name,
-        type: config.type,
         n: config.n,
         minLength: config.minLength,
         unique: config.unique ? 1 : 0,

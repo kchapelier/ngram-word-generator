@@ -25,7 +25,7 @@ stream.on('readable', function() {
     chunk = stream.read();
 
     if (chunk !== null) {
-        data+= chunk.toString().toLowerCase();
+        data+= chunk.toString();
     }
 });
 
